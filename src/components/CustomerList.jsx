@@ -8,6 +8,10 @@ import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
 
+import EditCustomer from './EditCustomer';
+import AddTraining from './AddTraining2';
+import AddCustomer from './AddCustomer';
+
 
 
 const Customers = () => {
@@ -16,7 +20,6 @@ const Customers = () => {
 
     useEffect(() => {
         fetchAll();
-        console.log("fetch renderöi");
     }, [])
 
     const fetchAll = () => {
@@ -25,6 +28,78 @@ const Customers = () => {
             .then(data => setCustomers(data.content))
             .catch(e => console.log(e))
     }
+
+    const removeCustomer = (url) => {
+        if (window.confirm("Are you sure to remove?")) {
+            fetch(url, { method: 'DELETE' })
+                .then(response => {
+                    if (response.ok) {
+                        fetchAll();
+                        setOpen(true);
+                    }
+                    else {
+                        alert('Try again!');
+                    }
+                })
+                .catch(err => console.error(err))
+        }
+    }
+    const edit = (d) => {
+        console.log(d);
+    }
+    const updateCustomer = (customer, link) => {
+        fetch(link,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(customer)
+            })
+            .then(response => {
+                if (response.ok) {
+                    fetchAll();
+                }
+                else {
+                    alert('Try again!');
+                }
+            })
+            .catch(err => console.error(err))
+    }
+    const addTraining = (t) => {
+        fetch('https://traineeapp.azurewebsites.net/api/trainings',
+          { method: 'POST', headers: {
+            'Content-Type':'application/json',
+          },
+          body: JSON.stringify(t)
+        })
+        .then(response => {
+          if (response.ok) {
+            fetchAll();
+          }
+          else {
+            alert('Try again!');
+          }
+        })
+        .catch(err => console.error(err))
+      }
+      const addCustomer = (customer) => {
+        fetch('https://traineeapp.azurewebsites.net/api/customers',
+          { method: 'POST', headers: {
+            'Content-Type':'application/json',
+          },
+          body: JSON.stringify(customer)
+        })
+        .then(response => {
+          if (response.ok) {
+            fetchAll();
+          }
+          else {
+            alert('Try again!');
+          }
+        })
+        .catch(err => console.error(err))
+      }
 
     const columns = [
         { 
@@ -45,28 +120,28 @@ const Customers = () => {
             headerName: 'Street Adress', 
             field: "streetaddress", 
             sortable: true, 
-            //maxWidth: 150, 
+            maxWidth: 170, 
             filter: true
         },
         { 
             headerName: 'Postcode', 
             field: "postcode", 
             sortable: true, 
-            maxWidth: 150, 
+            maxWidth: 120, 
             filter: true
         },
         { 
             headerName: 'City',
             field: "city", 
             sortable: true, 
-            maxWidth: 150, 
+            maxWidth: 120, 
             filter: true
         },
         { 
             headerName: 'Email',
             field: "email", 
             sortable: true, 
-            //maxWidth: 150, 
+            //maxWidth: 170, 
             filter: true
         },
         { 
@@ -76,26 +151,32 @@ const Customers = () => {
             maxWidth: 150, 
             filter: true
         },
-        // {
-        //     headerName: '',
-        //     field: "_links.self.href",
-        //     cellRenderer: params => <Button onClick={() => removeCar(params.value)}>remove</Button>,
-        //     maxWidth: 100
-        // },
-        // {
-        //     headerName: '',
-        //     field: "_links.self.href",
-        //     cellRenderer: params => <EditCar data={params.data} updateCar={updateCar} />,
-        //     maxWidth: 100
-        // }
+        {
+            headerName: '',
+            field: "links",
+            cellRenderer: params => <Button onClick={() => removeCustomer(params.value[0].href)}>remove</Button>,
+            maxWidth: 100
+        },
+        {
+            headerName: '',
+            cellRenderer: params => <EditCustomer data={params.data} updateCustomer={updateCustomer} />,
+            maxWidth: 80
+        },
+        {
+            headerName: '',
+            field: "links",
+            cellRenderer: params => <AddTraining data={params.data} addTraining={addTraining} />,
+            maxWidth: 150
+        }
     ];
 
     return (
         <div>
             <Stack mt={2} mb={2} alignItems="center">
                 Customers
+                <AddCustomer addCustomer={addCustomer} />
             </Stack>
-            <div class="ag-theme-material" style={{ height: '500px', width: '95%', margin: 'auto' }} >
+            <div class="ag-theme-material" style={{ height: '550px', width: '95%', margin: 'auto' }} >
                 <AgGridReact
                     pagination={true}
                     paginationPageSize={10}
@@ -107,7 +188,7 @@ const Customers = () => {
                     open={open}
                     autoHideDuration={2000}
                     onClose={() => setOpen(false)}
-                    message="Car removed"
+                    message="Customer removed"
                 />
             </div>
         </div>

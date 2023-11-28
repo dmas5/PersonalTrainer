@@ -8,26 +8,23 @@ import { Link, Outlet } from 'react-router-dom';
 function App() {
 
   return (
-      <div>
+    <div>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h5">
             PersonalTrainer
-            
           </Typography>
-          <Typography variant="h6" style={{marginLeft:'auto'}}>
-          <nav >
-          <Link style={{color:'white',textDecoration:'none',padding:8}} to={"/"}>Home</Link>
-          <Link style={{color:'white',textDecoration:'none',padding:8}} to={"/customers"}>Customers</Link>
-          <Link style={{color:'white',textDecoration:'none',padding:8}} to={"/trainings"}>Trainings</Link>
-          </nav>
-        </Typography>
+          <Typography variant="h6" style={{ marginLeft: 'auto' }}>
+            <nav >
+              <Link style={{ color: 'white', textDecoration: 'none', padding: 8 }} to={"/"}>Home</Link>
+              <Link style={{ color: 'white', textDecoration: 'none', padding: 8 }} to={"/customers"}>Customers</Link>
+              <Link style={{ color: 'white', textDecoration: 'none', padding: 8 }} to={"/trainings"}>Trainings</Link>
+            </nav>
+          </Typography>
         </Toolbar>
-
-        
       </AppBar>
       <Outlet />
-      </div>
+    </div>
   )
 }
 
