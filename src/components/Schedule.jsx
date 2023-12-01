@@ -12,7 +12,6 @@ import dayjs from 'dayjs';
 const Calendar = () => {
 
     const [trainings, setTrainings] = useState([]);
-    const [event,setEvent] = useState({"title":"","start":"","end":""})
 
     useEffect(() => {
         fetchAll();
@@ -26,20 +25,12 @@ const Calendar = () => {
             .catch(e => console.log(e))
     }
 
-    const ev = trainings.map((t) => {
-        // let obj = {"title":"","start":"","end":""};
-        // const date1 = new Date(t.date)
-        // const date = date1.getTime();
-        // const newtime = new Datetime(date + 60*60000);
-        // const date2 = new Date(date1 +newtime)
-        // console.log(date1.toISOString() + " " +date2.toISOString()  );
+    const events = trainings.map((t) => {
         const title = t.activity + "/" + t.customer.firstname + " " + t.customer.lastname
-        return {"title":title,"start":t.date,"end":t.date}
+        return { "title": title, "start": t.date, "end": t.date }
     })
-    //const o = {"title":"event title","start":"2023-11-29T20:00:44.060+00:00","end":"2023-11-29T22:00:44.060+00:00"}
+
     
-
-
     return (
         <div>
             <Stack mt={2} mb={2} alignItems="center">
@@ -58,7 +49,7 @@ const Calendar = () => {
                         center: "title",
                         end: "dayGridMonth timeGridWeek, timeGridDay"
                     }}
-                    events={ev}
+                    events={events}
                 />
             </div>
         </div>
