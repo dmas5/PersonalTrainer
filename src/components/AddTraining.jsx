@@ -19,11 +19,15 @@ import 'react-clock/dist/Clock.css';
 import DateTimePicker from 'react-datetime-picker';
 
 function AddTraining(props) {
+
   const [open, setOpen] = useState(false);
-  const [training, setTraining] = useState({ date: '', activity: '', duration: '', customer: '' });
   const [value, setValue] = useState(new Date());
 
-  const customers = props.customers || [];
+  const firstname = props.data.firstname;
+  const lastname = props.data.lastname;
+  const customerId = props.data.links[0].href;
+
+  const [training, setTraining] = useState({ date: "", activity: '', duration: '', customer: customerId });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -41,15 +45,15 @@ function AddTraining(props) {
   const handleChange = (event) => {
     setTraining({ ...training, [event.target.name]: event.target.value });
   }
-  
+
   useEffect(() => {
     setTraining({ ...training, date: value.toISOString() });
   }, [value]);
 
   return (
     <div>
-      <Button variant="contained" onClick={handleClickOpen}>
-        New Training
+      <Button onClick={handleClickOpen}>
+        Add Training
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>New Training</DialogTitle>
@@ -57,7 +61,6 @@ function AddTraining(props) {
           <Stack spacing={2} mt={1}>
             <InputLabel id="demo-simple-select-label">Date</InputLabel>
             <DateTimePicker onChange={e => setValue(e)} value={value} />
-
             <TextField label="Activity" name="activity" variant="standard" value={training.activity} onChange={handleChange} />
             <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
               <InputLabel id="demo-simple-select-standard-label">Duration</InputLabel>
@@ -74,21 +77,7 @@ function AddTraining(props) {
                 <MenuItem value={'60'}>60</MenuItem>
               </Select>
             </FormControl>
-            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel id="demo-simple-select-standard-label">Customer</InputLabel>
-              <Select
-                labelId="demo-simple-select-standard-label"
-                id="demo-simple-select-standard"
-                label="Customer"
-                name="customer"
-                value={training.customer}
-                onChange={handleChange}
-              >
-                {
-                  customers.map((customer) => <MenuItem value={customer.links[1].href}>{customer.firstname} {customer.lastname}</MenuItem>)
-                }
-              </Select>
-            </FormControl>
+            <TextField id="outlined-read-only-input" label="Customer" variant="standard" value={firstname + " " + lastname} />
           </Stack>
         </DialogContent>
         <DialogActions>

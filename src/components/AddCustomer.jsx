@@ -31,25 +31,25 @@ function AddCustomer(props) {
   
   return(
     <div>
-        <Button variant="contained" onClick={handleClickOpen}>Add Customer</Button>
-        <Dialog open={open} onClose={handleClose}>
-          <DialogTitle>Add Customer</DialogTitle>
-          <DialogContent>
-            <Stack spacing={2} mt={1}>
-              <TextField label="Firstname" name="firstname" autoFocus variant="standard" value={customer.firstname} onChange={handleChange}/>
-              <TextField label="Lastname" name="lastname" variant="standard" value={customer.lastname} onChange={handleChange}/>
-              <TextField label="Streetaddress" name="streetaddress" variant="standard" value={customer.streetaddress} onChange={handleChange}/>
-              <TextField label="Postcode" name="postcode" variant="standard" value={customer.postcode} onChange={handleChange}/>
-              <TextField label="City" name="city" variant="standard" value={customer.city} onChange={handleChange}/>
-              <TextField label="Email" name="email" variant="standard" value={customer.email} onChange={handleChange}/>
-              <TextField label="Phone" name="phone" variant="standard" value={customer.phone} onChange={handleChange}/>
-            </Stack>         
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleSave}>Save</Button>
-          </DialogActions>
-        </Dialog>            
+      <Button variant="contained" onClick={handleClickOpen}>Add Customer</Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Add Customer</DialogTitle>
+        <DialogContent>
+          <Stack spacing={2} mt={1}>
+            <TextField label="Firstname" name="firstname" autoFocus variant="standard" value={customer.firstname} onChange={handleChange} />
+            <TextField label="Lastname" name="lastname" variant="standard" value={customer.lastname} onChange={handleChange} />
+            <TextField label="Streetaddress" name="streetaddress" variant="standard" value={customer.streetaddress} onChange={handleChange} />
+            <TextField label="Postcode" name="postcode" variant="standard" value={customer.postcode} onChange={handleChange} />
+            <TextField label="City" name="city" variant="standard" value={customer.city} onChange={handleChange} />
+            <TextField label="Email" name="email" variant="standard" value={customer.email} onChange={handleChange} />
+            <TextField label="Phone" name="phone" variant="standard" value={customer.phone} onChange={handleChange} />
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSave}>Save</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );  
 }

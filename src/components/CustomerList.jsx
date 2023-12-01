@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import Snackbar from '@mui/material/Snackbar';
 
 import { AgGridReact } from 'ag-grid-react';
@@ -9,7 +10,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
 
 import EditCustomer from './EditCustomer';
-import AddTraining from './AddTraining2';
+import AddTraining from './AddTraining';
 import AddCustomer from './AddCustomer';
 
 
@@ -17,6 +18,14 @@ import AddCustomer from './AddCustomer';
 const Customers = () => {
     const [customers, setCustomers] = useState([]);
     const [open, setOpen] = useState(false);
+    const [message,setMessage] = useState("")
+
+    const gridRef = useRef();
+
+    const onBtnExport = useCallback(() => {
+        let params = { columnKeys: ['firstname', 'lastname','streetaddress','postcode','city','email','phone']}
+        gridRef.current.api.exportDataAsCsv(params);
+      }, []);
 
     useEffect(() => {
         fetchAll();
@@ -35,6 +44,7 @@ const Customers = () => {
                 .then(response => {
                     if (response.ok) {
                         fetchAll();
+                        setMessage("Customer removed")
                         setOpen(true);
                     }
                     else {
@@ -43,9 +53,6 @@ const Customers = () => {
                 })
                 .catch(err => console.error(err))
         }
-    }
-    const edit = (d) => {
-        console.log(d);
     }
     const updateCustomer = (customer, link) => {
         fetch(link,
@@ -93,6 +100,8 @@ const Customers = () => {
         .then(response => {
           if (response.ok) {
             fetchAll();
+            setMessage("Customer added")
+            setOpen(true);
           }
           else {
             alert('Try again!');
@@ -140,8 +149,7 @@ const Customers = () => {
         { 
             headerName: 'Email',
             field: "email", 
-            sortable: true, 
-            //maxWidth: 170, 
+            sortable: true,  
             filter: true
         },
         { 
@@ -173,11 +181,18 @@ const Customers = () => {
     return (
         <div>
             <Stack mt={2} mb={2} alignItems="center">
-                Customers
+                <Typography variant="h5">
+                    Customers
+                </Typography>
+            </Stack>
+            <Stack mt={2} mb={2} direction="row" spacing={2} alignItems="center" justifyContent="space-evenly">
                 <AddCustomer addCustomer={addCustomer} />
+                <Button variant="contained" onClick={onBtnExport}>Download CSV file</Button>
             </Stack>
             <div class="ag-theme-material" style={{ height: '550px', width: '95%', margin: 'auto' }} >
                 <AgGridReact
+                    ref={gridRef}
+                    suppressExcelExport={true}
                     pagination={true}
                     paginationPageSize={10}
                     columnDefs={columns}
@@ -188,7 +203,7 @@ const Customers = () => {
                     open={open}
                     autoHideDuration={2000}
                     onClose={() => setOpen(false)}
-                    message="Customer removed"
+                    message={message}
                 />
             </div>
         </div>

@@ -19,6 +19,8 @@ function App() {
               <Link style={{ color: 'white', textDecoration: 'none', padding: 8 }} to={"/"}>Home</Link>
               <Link style={{ color: 'white', textDecoration: 'none', padding: 8 }} to={"/customers"}>Customers</Link>
               <Link style={{ color: 'white', textDecoration: 'none', padding: 8 }} to={"/trainings"}>Trainings</Link>
+              <Link style={{ color: 'white', textDecoration: 'none', padding: 8 }} to={"/calendar"}>Calendar</Link>
+              <Link style={{ color: 'white', textDecoration: 'none', padding: 8 }} to={"/chart"}>Chart</Link>
             </nav>
           </Typography>
         </Toolbar>
